@@ -1,0 +1,13 @@
+
+学习 Qt 编程，宜用 C++ GUI Programming with Qt4 做为教材。它有例子代码可学习。
+
+编译步骤：
+在 Qt Command prompt 下执行 qmake -project 创建项目文件 project.pro；
+再执行 qmake project.pro，生成 Makefile 文件；
+再执行 make release 编译得到 project.exe。 
+要学习 make。
+
+安装步骤：
+首先要运行 qt-opensource-windows-x86-mingw482-4.8.7.exe，就安装了 Qt 4.8.7 。 
+它包括 Qt 命令行环境，GUI 设计环境，示例代码项目等。安装好还要让 Windows 记住 qt487\bin 的路径。
+它需要用 MinGW 4.8.2 做为 编译器，i686-4.8.2-release-posix-dwarf-rt-v3-rev4.7z 。似乎后续版本也可以。
