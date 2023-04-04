@@ -28,50 +28,46 @@
 //////////////////////////////////////////////////////////////////67
 
 
-
 void mnLog_Init( void )
 {
-  
-	//drv_SPI2_Init();		   			
-	//drv_SPI2_SetSpeed( SPI_BaudRatePrescaler_16 );		// 2.6125MHz
+  //drv_SPI2_Init();		   			
+  //drv_SPI2_SetSpeed( SPI_BaudRatePrescaler_16 );		// 2.6125MHz
 	
-	rtc_Config( );
-	at45_Config( );
+  rtc_Config( );
+  at45_Config( );
 	
-	fm25_csInit( );
+  fm25_csInit( );
 	
-	mnLog_Format();
-	
+  mnLog_Format();
 }
 	
 void mnLog_Format( void )   
 {
   uint8_t log0[4]={0x00,0x00, 0x00,0x00};  // magic_log in page0,address0 of flash chip
-	mnlog_t magic_log;
+  mnlog_t magic_log;
 	
+  uint8_t magicode[4];
+  fm25_ReadBytesSussive( MAGIC_ADDRESS_FM25, magicode, 4 );
 	
-	uint8_t magicode[4];
-	fm25_ReadBytesSussive( MAGIC_ADDRESS_FM25, magicode, 4 );
-	
-	if( magicode[0] != 0x64 || magicode[1] != 0x32 || magicode[2] != 0xab || magicode[3] != 0xcd )
-	{
+  if( magicode[0] != 0x64 || magicode[1] != 0x32 || magicode[2] != 0xab || magicode[3] != 0xcd )
+  {
 	  // first do something????
-		magicode[0] =0x64; magicode[1] =0x32; magicode[2] =0xab; magicode[3] =0xcd;
-	}
+    magicode[0] =0x64; magicode[1] =0x32; magicode[2] =0xab; magicode[3] =0xcd;
+  }
 	
-	uint8_t logx[8];
-	at45_ReadBytes( 0x00, 0x00, logx, 8 );
+  uint8_t logx[8];
+  at45_ReadBytes( 0x00, 0x00, logx, 8 );
 	
-	if( logx[0] != 0xcd || logx[1] != 0xab || logx[2] != 0x32 || logx[3] != 0x64 
-		   || logx[4] != 0x3b || logx[5] != 0xf9 || logx[6] != 0xb3 || logx[7] != 0x9f )
-	{
-	  at45_ErasePage( 0x0000 );   // page 0
+  if( logx[0] != 0xcd || logx[1] != 0xab || logx[2] != 0x32 || logx[3] != 0x64 
+	   || logx[4] != 0x3b || logx[5] != 0xf9 || logx[6] != 0xb3 || logx[7] != 0x9f )
+  {
+    at45_ErasePage( 0x0000 );   // page 0
 	
-	//rtc_GettoUnixtime( &(magic_log.unixtime) );
+    //rtc_GettoUnixtime( &(magic_log.unixtime) );
 	
-	  magic_log.unixtime = 0x6432abcd;   // 2023-4-9,20:13:01
-	  magic_log.logcode = 0xf93b;
-	  magic_log.logdata = 0x9fb3;
+    magic_log.unixtime = 0x6432abcd;   // 2023-4-9,20:13:01
+    magic_log.logcode = 0xf93b;
+    magic_log.logdata = 0x9fb3;
 	  at45_Write8Bytes( 0x00, 0x00, (uint8_t*)&magic_log );
 	
 		fm25_WriteBytesSussive( MAGIC_ADDRESS_FM25, magicode, 4 );
@@ -102,7 +98,6 @@ void mnLog_WriteLog( uint16_t logcode, uint16_t logdata )
 	  if( nowpage > (AT45DB08_NPAGES-1) )
 		{ nowpage = 0; nowbyteaddr = 8; }   // magic log in page0,address0
 		at45_ErasePage( nowpage );
-		 
 	}
 		
 	at45_Write8Bytes( nowpage, nowbyteaddr, (uint8_t*)&log );
