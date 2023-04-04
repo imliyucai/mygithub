@@ -68,44 +68,42 @@ void mnLog_Format( void )
     magic_log.unixtime = 0x6432abcd;   // 2023-4-9,20:13:01
     magic_log.logcode = 0xf93b;
     magic_log.logdata = 0x9fb3;
-	  at45_Write8Bytes( 0x00, 0x00, (uint8_t*)&magic_log );
+    at45_Write8Bytes( 0x00, 0x00, (uint8_t*)&magic_log );
 	
-		fm25_WriteBytesSussive( MAGIC_ADDRESS_FM25, magicode, 4 );
-	  fm25_WriteBytesSussive( LOG_ADDRESS_LASTWRITE, log0, 4 );
-	  fm25_WriteBytesSussive( LOG_ADDRESS_LASTREAD, log0, 4 );
-	}
-	
+    fm25_WriteBytesSussive( MAGIC_ADDRESS_FM25, magicode, 4 );
+    fm25_WriteBytesSussive( LOG_ADDRESS_LASTWRITE, log0, 4 );
+    fm25_WriteBytesSussive( LOG_ADDRESS_LASTREAD, log0, 4 );
+  }
 }
 
 void mnLog_WriteLog( uint16_t logcode, uint16_t logdata )
 {
   uint8_t logaddr[4];
-	uint16_t nowpage;
-	uint16_t nowbyteaddr;
+  uint16_t nowpage;
+  uint16_t nowbyteaddr;
 	
-	mnlog_t log;
-	rtc_GettoUnixtime( &(log.unixtime) );
-	log.logcode = logcode;
-	log.logdata = logdata;
+  mnlog_t log;
+  rtc_GettoUnixtime( &(log.unixtime) );
+  log.logcode = logcode;
+  log.logdata = logdata;
 		
-	fm25_ReadBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
-	nowpage = *(uint16_t*)(&logaddr[0]);
-	nowbyteaddr = *(uint16_t*)(&logaddr[2]);
-	nowbyteaddr += 8;   // one log use 8-byte address space
-	if( nowbyteaddr > 249 )   // current page has exhausted
-	{ 
-		nowpage++; nowbyteaddr = 0;
-	  if( nowpage > (AT45DB08_NPAGES-1) )
-		{ nowpage = 0; nowbyteaddr = 8; }   // magic log in page0,address0
-		at45_ErasePage( nowpage );
-	}
+  fm25_ReadBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
+  nowpage = *(uint16_t*)(&logaddr[0]);
+  nowbyteaddr = *(uint16_t*)(&logaddr[2]);
+  nowbyteaddr += 8;   // one log use 8-byte address space
+  if( nowbyteaddr > 249 )   // current page has exhausted
+  { 
+    nowpage++; nowbyteaddr = 0;
+    if( nowpage > (AT45DB08_NPAGES-1) )
+    { nowpage = 0; nowbyteaddr = 8; }   // magic log in page0,address0
+    at45_ErasePage( nowpage );
+  }
 		
-	at45_Write8Bytes( nowpage, nowbyteaddr, (uint8_t*)&log );
+  at45_Write8Bytes( nowpage, nowbyteaddr, (uint8_t*)&log );
 	
-	*(uint16_t*)(&logaddr[0]) = nowpage;
-	*(uint16_t*)(&logaddr[2]) = nowbyteaddr;
-	fm25_WriteBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
-	
+  *(uint16_t*)(&logaddr[0]) = nowpage;
+  *(uint16_t*)(&logaddr[2]) = nowbyteaddr;
+  fm25_WriteBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
 }
 
 // return true: there are new log should be read
@@ -113,62 +111,62 @@ void mnLog_WriteLog( uint16_t logcode, uint16_t logdata )
 uint8_t mnLog_CheckNewLog( void )
 {
   uint8_t logaddr[4];
-	uint8_t logaddr2[4];
-	uint16_t nowpage;
-	uint16_t nowbyteaddr;
-	uint16_t nowpage2;
-	uint16_t nowbyteaddr2;
+  uint8_t logaddr2[4];
+  uint16_t nowpage;
+  uint16_t nowbyteaddr;
+  uint16_t nowpage2;
+  uint16_t nowbyteaddr2;
 		
-	fm25_ReadBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
-	fm25_ReadBytesSussive( LOG_ADDRESS_LASTREAD, logaddr2, 4 );
-	nowpage = *(uint16_t*)(&logaddr[0]);
-	nowbyteaddr = *(uint16_t*)(&logaddr[2]);
-	nowpage2 = *(uint16_t*)(&logaddr2[0]);
-	nowbyteaddr2 = *(uint16_t*)(&logaddr2[2]);
+  fm25_ReadBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
+  fm25_ReadBytesSussive( LOG_ADDRESS_LASTREAD, logaddr2, 4 );
+  nowpage = *(uint16_t*)(&logaddr[0]);
+  nowbyteaddr = *(uint16_t*)(&logaddr[2]);
+  nowpage2 = *(uint16_t*)(&logaddr2[0]);
+  nowbyteaddr2 = *(uint16_t*)(&logaddr2[2]);
 	
-	if( nowbyteaddr2 != nowbyteaddr || nowpage2 != nowpage )
-	{
-	  return true;
-	}
-	else
-		return false;
+  if( nowbyteaddr2 != nowbyteaddr || nowpage2 != nowpage )
+  {
+    return true;
+  }
+  else
+    return false;
 }
 
 void mnLog_ReadNewLog( mnlog_t* plog )
 {
   uint8_t logaddr[4];
-	uint8_t logaddr2[4];
-	uint16_t nowpage;
-	uint16_t nowbyteaddr;
-	uint16_t nowpage2;
-	uint16_t nowbyteaddr2;
-	//mnlog_t log;
+  uint8_t logaddr2[4];
+  uint16_t nowpage;
+  uint16_t nowbyteaddr;
+  uint16_t nowpage2;
+  uint16_t nowbyteaddr2;
+  //mnlog_t log;
 	
-	fm25_ReadBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
-	fm25_ReadBytesSussive( LOG_ADDRESS_LASTREAD, logaddr2, 4 );
-	nowpage = *(uint16_t*)(&logaddr[0]);
-	nowbyteaddr = *(uint16_t*)(&logaddr[2]);
-	nowpage2 = *(uint16_t*)(&logaddr2[0]);
-	nowbyteaddr2 = *(uint16_t*)(&logaddr2[2]);
+  fm25_ReadBytesSussive( LOG_ADDRESS_LASTWRITE, logaddr, 4 );
+  fm25_ReadBytesSussive( LOG_ADDRESS_LASTREAD, logaddr2, 4 );
+  nowpage = *(uint16_t*)(&logaddr[0]);
+  nowbyteaddr = *(uint16_t*)(&logaddr[2]);
+  nowpage2 = *(uint16_t*)(&logaddr2[0]);
+  nowbyteaddr2 = *(uint16_t*)(&logaddr2[2]);
 	
-	if( nowbyteaddr2 != nowbyteaddr || nowpage2 != nowpage )
-	{
+  if( nowbyteaddr2 != nowbyteaddr || nowpage2 != nowpage )
+  {
 	  
-		nowbyteaddr2 += 8;   // one log use 8-byte address space
-	  if( nowbyteaddr2 > 249 )   // current page has exhausted
-	  { 
-		  nowpage2++;  nowbyteaddr2 = 0; 
-	    if( nowpage2 > (AT45DB08_NPAGES-1) )
-		  { nowpage2 = 0; nowbyteaddr2 = 8;  }
+    nowbyteaddr2 += 8;   // one log use 8-byte address space
+    if( nowbyteaddr2 > 249 )   // current page has exhausted
+    { 
+      nowpage2++;  nowbyteaddr2 = 0; 
+      if( nowpage2 > (AT45DB08_NPAGES-1) )
+      { nowpage2 = 0; nowbyteaddr2 = 8;  }
 		  
-		}	
-		at45_ReadBytes( nowpage2, nowbyteaddr2, (uint8_t*)plog, 8 );
+    }	
+    at45_ReadBytes( nowpage2, nowbyteaddr2, (uint8_t*)plog, 8 );
 		
-		*(uint16_t*)(&logaddr[0]) = nowpage2;
-	  *(uint16_t*)(&logaddr[2]) = nowbyteaddr2;
-	  fm25_WriteBytesSussive( LOG_ADDRESS_LASTREAD, logaddr, 4 );
+    *(uint16_t*)(&logaddr[0]) = nowpage2;
+    *(uint16_t*)(&logaddr[2]) = nowbyteaddr2;
+    fm25_WriteBytesSussive( LOG_ADDRESS_LASTREAD, logaddr, 4 );
 	  
-	}
+  }
 }
 //////////////////////////////////////////////////////////////////67
 
