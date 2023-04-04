@@ -1,0 +1,27 @@
+
+      关于 日志模块 mnLog 的说明
+
+本模块的源码在 \liy_mnLog 目录下，包括 RTC、FM25、AT45 的驱动程序，和 日志写入读出处理函数。以及一个示例任务 liy_task_mnLog 。  
+
+使用 mnLog 模块，需要首先初始化 SPI2，再调用 mnLog_Init( ); 这个函数会配置 RTC、FM25、及AT45，并在第一次使用时格式化 AT45 使其
+能用于保存日志。
+
+当需要写入日志时，调用 mnLog_WriteLog( 0x0327, 0xd1d2 ); 这个函数会将当前 RTC 时间和参数指定的 日志编码及数据写入 AT45 的合适
+位置。函数的第一个参数是 日志编码，第二个参数是 附带的数据。
+
+当需要读出日志时，调用 mnLog_ReadNewLog( &telog ); 这个函数会读出未曾读出过的最先一条日志。在读出日志之前，应该调用
+mnLog_CheckNewLog( ); 以查看是否有尚未读出过的日志。如果返回 true，表示有新日志，则可读取；如返回 false，表示没有新日志可读出。
+
+日志采用 8字节表示，其中前 4字节是 unix 时间，接下来是 2字节日志编码，和 2字节附带数据。
+AT45db08 容量可以保存 130000 条日志。当容量耗尽时，模块会自动覆盖最早的日志。
+
+读取 RTC 时间可以调用 rtc_GetTimeDate( timedate* ptimdat ); 得到的是北京时间的时分秒、年月日星期。   
+也可以调用 rtc_GettoUnixtime( uint32_t* punixtime ); 得到 unix 时间。
+
+设置 RTC 时间可以调用 rtc_SetTimeDate( timedate* ptimdat ); 参数指定要写入的北京时间的时分秒、年月日星期，都是二进制数。
+其中年数以 2000年为0。星期以星期日为0。
+也可以调用 rtc_SetfromUnixtime( uint32_t unixtime ); 参数中指定的是 unix 时间。   
+
+本模块占用 FM25 的 0x40 地址开始的 16 字节空间，0x40~0x4f，其他程序不要读写这些地址。
+
+其他就不说了。
