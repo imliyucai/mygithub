@@ -1,0 +1,6 @@
+BLE TLM beacon 
+
+这是符合 BLE eddystone tlm 协议的 beacon。
+要求每 2 秒发送一次 tlm 消息。但在 beacon 自己不运动即静止时不发出消息。实际实现的是静止时每 65 秒发出一次消息。
+
+主芯片采用 nRF52810，振动检测采用芯片 LIS3DH。 在 nRF52 SDK14.2 下开发。 
