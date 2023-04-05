@@ -16,7 +16,7 @@ e.  制作加工图
   阻焊层包括： package geometry/soldermask，pin/soldermask，以及可能的 board geometry/soldermask。
               -如果表面要沉金处理，还要包括 surface finishes/immersion_tin 。
   锡膏层包括： pin/pastemask, 如果表面要沉金处理，还要包括 surface finishes/immersion_tin 。
-  为了明确，应该专门导出一个板框层图，包括：board geometry/design_outline，/cutout 。
+  为了明确，应该专门导出一个板框层图，包括：board geometry/design_outline，/cutout 。还可以加入尺寸、板厚、板材料、表面处理等加工要求。
   
   在 allegro 中 user preferences/file management/output dir 中可指定 加工图 gerber 的导出目录。 
   
