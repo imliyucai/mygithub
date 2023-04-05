@@ -18,4 +18,6 @@ e.  制作加工图
   锡膏层包括： pin/pastemask, 如果表面要沉金处理，还要包括 surface finishes/immersion_tin 。
   为了明确，应该专门导出一个板框层图，包括：board geometry/design_outline，/cutout 。
   
+  在 allegro 中 user preferences/file management/output dir 中可指定 加工图 gerber 的导出目录。 
+  
   
