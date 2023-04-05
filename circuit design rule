@@ -4,3 +4,9 @@ a.  原理图元件封装
 
 
 b.  电路板元件封装 
+
+
+
+
+e.  制作加工图
+  布线层包括： etch，pin，via class 。 再加上 board geometry/design_outline，/cutout 。
