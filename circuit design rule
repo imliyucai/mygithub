@@ -15,5 +15,7 @@ e.  制作加工图
   丝印层包括： package geometry/silkscreen，ref des/silkscreen，以及放在其他设计层的需要的 silkscreen。      
   阻焊层包括： package geometry/soldermask，pin/soldermask，以及可能的 board geometry/soldermask。
               -如果表面要沉金处理，还要包括 surface finishes/immersion_tin 。
-  锡膏层包括：
+  锡膏层包括： pin/pastemask, 如果表面要沉金处理，还要包括 surface finishes/immersion_tin 。
+  为了明确，应该专门导出一个板框层图，包括：board geometry/design_outline，/cutout 。
+  
   
