@@ -10,3 +10,10 @@ b.  电路板元件封装
 
 e.  制作加工图
   布线层包括： etch，pin，via class 。 再加上 board geometry/design_outline，/cutout 。
+  钻孔图包括： manufacturing/NClegend-1-n，/NCdrill_legend，/NCdrill_figure 。 如果有槽孔，则再包括 /NClegend-slots-1-n。
+              -上面是只有贯通孔的一般情形，如果有盲孔和埋孔，还要包括相应孔的钻孔图。
+  丝印层包括： package geometry/silkscreen，ref des/silkscreen，以及放在其他设计层的需要的 silkscreen。      
+  阻焊层包括： package geometry/soldermask，pin/soldermask，以及可能的 board geometry/soldermask。
+              -如果表面要沉金处理，还要包括 surface finishes/immersion_tin 。
+  锡膏层包括：
+  
