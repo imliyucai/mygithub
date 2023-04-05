@@ -20,4 +20,4 @@ e.  制作加工图
   
   在 allegro 中 user preferences/file management/output dir 中可指定 加工图 gerber 的导出目录。 
   
-  
+  可在 CAM350 中为 screen 层添加板名等信息，用 Arial Black（H75）字体。公司名可用 Cooper Black（H100）或 AR berkley（H200）字体。 
