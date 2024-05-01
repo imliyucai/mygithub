@@ -5,7 +5,7 @@ sudo apt-get install git-core
 
  in windows:
 install git for windows, 
-which can down load from https://msysgit,github.io/  
+which can download from https://msysgit,github.io/  
 
 
 ### config user
@@ -43,13 +43,16 @@ git checkout basic/themain.c
 ### remote repository operation
 git clone https://github.com/imliyucai/mygithub.git
 git remote add origin https://github.com/imliyucai/mygithub.git
+
 git push -u origin main
 git push origin main
 
+// download changes from remote repository
+git fetch origin main
+git merge origin/main
 
-
-
-
+// or
+git pull origin main
 
 
 
