@@ -1,0 +1,54 @@
+
+### prepare software
+ in ubuntu:
+sudo apt-get install git-core
+
+ in windows:
+install git for windows, 
+which can down load from https://msysgit,github.io/  
+
+
+### config user
+git config --global user.name "liyucai"
+git config __global user.email "yucaili@yeah.net" 
+
+
+### local repository operation
+git init
+git add README.md
+git add basic/ 
+git add .
+git commit -m "first commit"
+
+git branch -M main
+git branch  newbrch  
+git checkout  newbrch
+git branch  
+git branch -d  newbrch 
+
+git log  
+git tag -a  V1.03  -m  "this is the V1.03"
+
+// before add 
+git diff
+git diff basic/themain.c
+git checkout basic/themain.c 
+
+// after add before commit 
+git status
+git reset HEAD basic/themain.c
+git checkout basic/themain.c 
+
+
+### remote repository operation
+git clone https://github.com/imliyucai/mygithub.git
+git remote add origin https://github.com/imliyucai/mygithub.git
+git push -u origin main
+
+
+
+
+
+
+
+
