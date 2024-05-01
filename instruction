@@ -44,6 +44,8 @@ git checkout basic/themain.c
 git clone https://github.com/imliyucai/mygithub.git
 git remote add origin https://github.com/imliyucai/mygithub.git
 git push -u origin main
+git push origin main
+
 
 
 
