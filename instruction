@@ -1,5 +1,7 @@
+#### git is a program to manage code developed by Linus Torvalds ####
+#### in Windows, git for windows is same function program ####
 
-### prepare software
+### prepare software ###
  in ubuntu:
 sudo apt-get install git-core
 
@@ -8,13 +10,14 @@ install git for windows,
 which can download from https://msysgit,github.io/  
 
 
-### config user
+### config user ###
 git config --global user.name "liyucai"
 git config __global user.email "yucaili@yeah.net" 
 
 
-### local repository operation
+### local repository operation ###
 git init
+
 git add README.md
 git add basic/ 
 git add .
@@ -40,17 +43,17 @@ git reset HEAD basic/themain.c
 git checkout basic/themain.c 
 
 
-### remote repository operation
+### remote repository operation ###
 git clone https://github.com/imliyucai/mygithub.git
 git remote add origin https://github.com/imliyucai/mygithub.git
 
+// upload changs to remote repository
 git push -u origin main
 git push origin main
 
 // download changes from remote repository
 git fetch origin main
 git merge origin/main
-
 // or
 git pull origin main
 
